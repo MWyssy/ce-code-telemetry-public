@@ -1,14 +1,15 @@
-FROM maven:3-amazoncorretto-20 as base
+FROM eclipse-temurin:17-jdk-jammy as base
 WORKDIR /app
-COPY pom.xml ./
-RUN mvn dependency:resolve
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:resolve
 COPY src ./src
 
 FROM base as development
-CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
 
 FROM base as build
-RUN mvn package
+RUN ./mvnw package
 
 
 FROM eclipse-temurin:17-jre-jammy as production
