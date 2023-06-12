@@ -7,7 +7,6 @@ ENV PROJECT_DIR /usr/src/flaskbookapi
 WORKDIR ${PROJECT_DIR}
 
 COPY Pipfile .
-# COPY Pipfile.lock .
 COPY api.py .
 
 RUN pipenv install --deploy --ignore-pipfile
